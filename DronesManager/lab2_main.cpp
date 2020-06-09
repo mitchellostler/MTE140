@@ -22,10 +22,11 @@ int main() {
       "Test7: inserting at different positions in the list",
       "Test8: try to remove too many elements, then add a few elements",
       "Test9: lots of inserts and deletes, some of them invalid",
-      "Test10: lots of inserts, reverse the list, and then lots of removes until empty"
+      "Test10: lots of inserts, reverse the list, and then lots of removes until empty",
+      "Test11: custom made by mitchell",
     };
-
-    bool test_results[10];
+ 
+    bool test_results[11];
     test_results[0] = drones_manager_test.test1();
     test_results[1] = drones_manager_test.test2();
     test_results[2] = drones_manager_test.test3();
@@ -36,10 +37,10 @@ int main() {
     test_results[7] = drones_manager_test.test8();
     test_results[8] = drones_manager_test.test9();
     test_results[9] = drones_manager_test.test10();
+    test_results[10] = drones_manager_test.test11();
     cout << "DRONES MANAGER TEST RESULTS \n";
     cout << "*************************** \n";
-    
-    for (int index = 0; index < 10; ++index) {
+    for (int index = 0; index < 11; ++index) {
         cout << test_descriptions[index] << endl << get_status_str(test_results[index]) << endl;
     }
     

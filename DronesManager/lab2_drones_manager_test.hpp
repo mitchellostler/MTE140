@@ -227,5 +227,33 @@ public:
 
 			return true;
 	}
+	
+	//branch and boundary tests getDroneRecord and Select (along with == operator)
+	bool test11() {
+		DronesManager manager;
+		ASSERT_TRUE(manager.empty())
+		ASSERT_TRUE(manager.getDroneRecord(0) == nullptr)
+		ASSERT_TRUE(manager.select(0) == DronesManager::DroneRecord(0))
+		ASSERT_TRUE(manager.search(DronesManager::DroneRecord(1)) == -1)
+		for(int i = 0; i < 5; i++) {
+			ASSERT_TRUE(manager.insert_back(DronesManager::DroneRecord(i)))
+		}	
+		ASSERT_TRUE(manager.get_size() == 5)
+
+		ASSERT_TRUE(manager.getDroneRecord(5)==nullptr)
+		ASSERT_TRUE(manager.getDroneRecord(0)->droneID == 0)
+		ASSERT_TRUE(manager.getDroneRecord(4)->droneID == 4)
+
+		ASSERT_TRUE(manager.select(0) == *manager.getDroneRecord(0))
+		ASSERT_TRUE(manager.select(5) == *manager.getDroneRecord(4))
+		ASSERT_TRUE(manager.select(4) == *manager.getDroneRecord(4))
+
+		ASSERT_TRUE(manager.search(DronesManager::DroneRecord(0)) == 0)
+		ASSERT_TRUE(manager.search(DronesManager::DroneRecord(0)) == 0)
+		ASSERT_TRUE(manager.search(DronesManager::DroneRecord(10)) == manager.get_size())
+
+
+		return true;
+	}
 };
 #endif

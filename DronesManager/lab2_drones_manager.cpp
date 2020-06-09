@@ -1,7 +1,6 @@
 #include "lab2_drones_manager.hpp"
 #include <iostream>
 
-//using namespace std;
 // TODO: Implement all of the listed functions below
 // See the assignment specifications and the header file for details
 // Your code needs to pass at least all of the provided test cases
@@ -49,7 +48,7 @@ bool DronesManager::empty() const {
 }
 
 DronesManager::DroneRecord* DronesManager::getDroneRecord(unsigned int index) const {
-	if(index>size || empty())
+	if(index>=size || empty())
 		return nullptr;
 	DroneRecord* current = first;
 	DroneRecord* next;
@@ -61,10 +60,10 @@ DronesManager::DroneRecord* DronesManager::getDroneRecord(unsigned int index) co
 }
 
 DronesManager::DroneRecord DronesManager::select(unsigned int index) const {
-	if(index>size) 
-		return *last;
 	if(empty())
 		return DroneRecord(0);
+	if(index>=size) 
+		return *last;
 	return *getDroneRecord(index);
 }
 
@@ -101,25 +100,13 @@ void DronesManager::print() const {
 bool DronesManager::insert(DroneRecord value, unsigned int index) {
 	if(index>size)
 		return false;
-	DroneRecord* new_drone = new DroneRecord();
-	new_drone->batteryType = value.batteryType;
-	new_drone->droneID = value.droneID;
-	new_drone->droneType = value.droneType;
-	new_drone->description = value.description;
-	new_drone->manufacturer = value.manufacturer;
-	new_drone->range = value.range;
-	new_drone->yearBought = value.yearBought;
-	new_drone->next = nullptr;
-	new_drone->prev = nullptr;
-
+	DroneRecord* new_drone = new DroneRecord(value);
 	DroneRecord* current = getDroneRecord(index);
 	if(current == first || empty())
 		return insert_front(value);
 	if(index == size) 
 		return insert_back(value);
-	
 	DroneRecord* prev = current->prev;
-
 	new_drone->next = current;
 	new_drone->prev = current->prev;
 	prev->next = new_drone;
@@ -129,52 +116,27 @@ bool DronesManager::insert(DroneRecord value, unsigned int index) {
 }
 
 bool DronesManager::insert_front(DroneRecord value) {
-	DroneRecord* new_drone = new DroneRecord();
-	new_drone->batteryType = value.batteryType;
-	new_drone->droneID = value.droneID;
-	new_drone->droneType = value.droneType;
-	new_drone->description = value.description;
-	new_drone->manufacturer = value.manufacturer;
-	new_drone->range = value.range;
-	new_drone->yearBought = value.yearBought;
-	new_drone->next = nullptr;
-	new_drone->prev = nullptr;
+	DroneRecord* new_drone = new DroneRecord(value);
 	if(empty()) {
 		first = new_drone;
 		last = new_drone;
 		new_drone->next = nullptr;
 		new_drone->prev = nullptr;
 		size++;
-		/*cout << "New item       " << new_drone << endl;
-		cout << "new item next  " << new_drone->next << endl;*/
 		return true;
 	} else {
-	DroneRecord* next = first;
-	first = new_drone;
-	new_drone->prev = nullptr;
-	new_drone->next = next;
-	next->prev = new_drone;
-	/*cout << "New item       " << new_drone << endl;
-	cout << "new item next  " << new_drone->next << endl;
-	cout << "next item      " << next << endl;
-	cout << "next item prev " << next->prev << endl;*/
+		DroneRecord* next = first;
+		first = new_drone;
+		new_drone->prev = nullptr;
+		new_drone->next = next;
+		next->prev = new_drone;
 	}
-
-
 	size++;
 	return true;
 }
 
 bool DronesManager::insert_back(DroneRecord value) {
-	DroneRecord* new_drone = new DroneRecord();
-	new_drone->batteryType = value.batteryType;
-	new_drone->droneID = value.droneID;
-	new_drone->droneType = value.droneType;
-	new_drone->description = value.description;
-	new_drone->manufacturer = value.manufacturer;
-	new_drone->range = value.range;
-	new_drone->yearBought = value.yearBought;
-	
+	DroneRecord* new_drone = new DroneRecord(value);
 	if(empty()) {
 		first = new_drone;
 		last = new_drone;
@@ -201,10 +163,8 @@ bool DronesManager::remove(unsigned int index) {
 		return remove_front();
 	if(current == last) 
 		return remove_back();
-
 	DroneRecord* next = current->next;
 	DroneRecord* prev = current->prev;
-	
 	delete current;
 	next->prev = prev;
 	prev->next = next;
@@ -256,7 +216,6 @@ bool DronesManager::replace(unsigned int index, DroneRecord value) {
 	if(index>size || empty())
 		return false;
 	DroneRecord* current = getDroneRecord(index);
-	DroneRecord* new_drone = new DroneRecord();
 	current->batteryType = value.batteryType;
 	current->droneID = value.droneID;
 	current->droneType = value.droneType;
@@ -272,14 +231,11 @@ bool DronesManager::reverse_list() {
 	DroneRecord* new_last = first;
 	DroneRecord* next_node;
 	DroneRecord* next_holder;
-	//DroneRecord* prev_holder;
 	for(int node = 0; node < size; node++) {
 		next_node = current->next;
-
 		next_holder = current->next;
 		current->next = current->prev;
 		current->prev = next_holder;
-
 		current = next_node;
 	}
 	first = last;

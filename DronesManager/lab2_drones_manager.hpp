@@ -24,6 +24,11 @@ protected:
 			yearBought(newYearBought), droneType(newDroneType),
 			manufacturer(newManufacturer), description(newDescription),
 			batteryType(newBatteryType) {}
+			
+		// Copy Constructor
+		DroneRecord(const DroneRecord& drone) : droneID(drone.droneID),
+			range(drone.range), yearBought(drone.yearBought), manufacturer(drone.manufacturer),
+			description(drone.description), batteryType(drone.batteryType), prev(nullptr), next(nullptr) {}
 
 		// drone ID, range, and year bought stored as unsigned ints
 		unsigned int droneID, range, yearBought;
